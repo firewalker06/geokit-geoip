@@ -44,5 +44,20 @@ class TestGeokitGeoip < Test::Unit::TestCase
         assert_equal 5, loc.zip.size
       end
     end
+
+    context "with Indonesia ip" do
+      setup { @ip = '110.137.192.0' }
+      should "be successful" do
+        result = @geocoder.geocode(@ip)
+        assert result.success?, result.city
+      end
+      should "set the right attributes" do
+        loc = @geocoder.geocode(@ip)
+        assert_equal "Bekasi", loc.city
+        assert_equal "ID", loc.country_code
+        assert (-7..-6).include?(loc.lat)
+        assert (106..107).include?(loc.lng)
+      end
+    end
   end
 end
